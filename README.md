@@ -9,8 +9,8 @@ Precompile phase
 ```bash
 %time ./build.sh
 BEEP!
-BOOP!
-./build.sh  0.78s user 0.09s system 65% cpu 1.323 total
+QUXX
+./build.sh  0.80s user 0.09s system 62% cpu 1.434 total
 ```
 
 ### Second run
@@ -20,7 +20,7 @@ Compile with existing objects
 ```bash
 %time ./build.sh
 BEEP!
-BOOP!
-./build.sh  0.08s user 0.03s system 58% cpu 0.180 total
+QUXX
+./build.sh  0.07s user 0.03s system 47% cpu 0.200 total
 ```
 
