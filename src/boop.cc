@@ -5,7 +5,6 @@ module;
 export module Socket.Boop;
 
 import Socket.Quxx;
-// import <iostream>;
 
 export namespace Boop {
   void burp () {
