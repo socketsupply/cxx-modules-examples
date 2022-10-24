@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# modules are only properly supported in llvm > 15
+# modules are only properly supported in llvm > 15, as of this writing,
+# `brew install llvm` will get you everything you need to use this code.
 CXX=/opt/homebrew/opt/llvm@15/bin/clang++
 
 if [ ! -d "build" ]; then
