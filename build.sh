@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-
+#
 # modules are only properly supported in llvm > 15, as of this writing,
 # `brew install llvm` will get you everything you need to use this code.
+# rtfm here - https://clang.llvm.org/docs/StandardCPlusPlusModules.html
+#
 CXX=/opt/homebrew/opt/llvm@15/bin/clang++
 
 if [ ! -d "build" ]; then
