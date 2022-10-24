@@ -2,6 +2,31 @@
 
 A C++20 modules example
 
+## Example
+
+### boop.cc
+```cc
+module;
+export module Beep.Boop;
+
+export namespace Boop {
+  auto burp () {
+    return 0;
+  }
+}
+```
+
+### main.cc
+```cc
+import Beep.Boop;
+
+int main() {
+  return Boop::burp();
+}
+```
+
+## Modules performance wins!
+
 ### First run
 
 Precompile phase
