@@ -6,6 +6,8 @@
 #
 CXX=/opt/homebrew/opt/llvm@15/bin/clang++
 
+mkdir -p bin
+
 if [ ! -d "build" ]; then
   mkdir build
 
@@ -54,11 +56,15 @@ if [ ! -d "build" ]; then
   $CXX -std=c++2b -c build/boop.pcm -o build/boop.o
 fi
 
-$CXX -std=c++2b                              \
-  -fmodule-file=build/quxx.pcm build/quxx.o  \
-  -fmodule-file=build/beep.pcm build/beep.o  \
-  -fmodule-file=build/boop.pcm build/boop.o  \
-  -o bin/main                                \
+## build archive
+ar crus build/libmodules.a build/*.o
+
+$CXX -std=c++2b                 \
+  -fmodule-file=build/quxx.pcm  \
+  -fmodule-file=build/beep.pcm  \
+  -fmodule-file=build/boop.pcm  \
+  -o bin/main                   \
+  build/libmodules.a            \
   src/main.cc
 
 ./bin/main
