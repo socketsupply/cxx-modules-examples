@@ -1,4 +1,2 @@
-*.pcm
-*.o
-main
-
+/build
+/bin/main

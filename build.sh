@@ -1,20 +1,36 @@
 #!/usr/bin/env bash
 
+# modules are only properly supported in llvm > 15
 CXX=/opt/homebrew/opt/llvm@15/bin/clang++
 
-$CXX -std=c++2b --precompile beep.cppm -fmodule-name=Socket.Beep -o beep.pcm
-$CXX -std=c++2b -c beep.pcm -o beep.o
+if [ ! -d "build" ]; then
+  mkdir build
 
-$CXX -std=c++2b --precompile boop.cppm -fmodule-name=Socket.Boop -o boop.pcm
-$CXX -std=c++2b -c boop.pcm -o boop.o
+  # precompile the `beep` module
+  $CXX -std=c++2b --precompile src/beep.cppm -fmodule-name=Socket.Beep -o build/beep.pcm
+  # create an object file from the precompiled module that can be linked
+  $CXX -std=c++2b -c build/beep.pcm -o build/beep.o
 
-$CXX -Wno-unused-command-line-argument -std=c++2b -fmodules-ts \
-  -fmodule-file=beep.pcm beep.o \
-  -fmodule-file=boop.pcm boop.o \
-  -o main \
-  main.cpp
+  # same procedure for the `quxx` module. order of compilation is important, we
+  # need quxx to be precompiled before `boop` because `boop` will use it.
+  $CXX -std=c++2b --precompile src/quxx.cppm -fmodule-name=Socket.Quxx -o build/quxx.pcm
+  $CXX -std=c++2b -c build/quxx.pcm -o build/quxx.o
 
-rm *.o
-rm *.pcm
+  # `boop` uses `quxx`, so we need to specify the `-fmodule-file=<file>` flag.
+  $CXX -std=c++2b \
+    --precompile src/boop.cppm \
+    -fmodule-file=build/quxx.pcm \
+    -fmodule-name=Socket.Boop \
+    -o build/boop.pcm
 
-./main
+  $CXX -std=c++2b -c build/boop.pcm -o build/boop.o
+fi
+
+$CXX -std=c++2b \
+  -fmodule-file=build/quxx.pcm build/quxx.o \
+  -fmodule-file=build/beep.pcm build/beep.o \
+  -fmodule-file=build/boop.pcm build/boop.o \
+  -o bin/main \
+  src/main.cpp
+
+./bin/main

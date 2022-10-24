@@ -4,8 +4,10 @@ module;
 
 export module Socket.Boop;
 
+import Socket.Quxx;
+
 export namespace Boop {
   void burp () {
-    std::cout << "BOOP!" << std::endl;
+    std::cout << Quxx::burp() << std::endl;
   }
 }
